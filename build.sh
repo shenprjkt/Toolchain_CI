@@ -86,7 +86,7 @@ clang_version="$(install/bin/clang --version | head -n1 | cut -d' ' -f4)"
 # Update Git repository
 git config --global user.name "shenprjkt"
 git config --global user.email "shenprjktplayground@gmail.com"
-git clone "https://Itz-Kanasama:$GITHUB_TOKEN@github.com/Redmi-S2-Y2-Resources/Paradise_Clang.git" rel_repo
+git clone "https://shenprjkt:$GITHUB_TOKEN@github.com/Redmi-S2-Y2-Resources/Paradise_Clang.git" rel_repo
 pushd rel_repo || exit
 rm -fr ./*
 cp -r ../install/* .
