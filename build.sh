@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-git clone https://github.com/Panchajanya1999/tc-build $(pwd)/llvmTC -b master
+git clone https://github.com/shenprjkt/tc-build $(pwd)/llvmTC -b master
 cd $(pwd)/llvmTC
 
 # Function to show an informational message
@@ -88,6 +88,6 @@ git commit -asm "Paradise: Update to $rel_date build
 LLVM commit: $llvm_commit_url
 Clang Version: $clang_version
 Binutils version: $binutils_ver
-Builder commit: https://github.com/Panchajanya1999/tc-build/commit/$builder_commit"
+Builder commit: https://github.com/shenprjkt/tc-build/commit/$builder_commit"
 git push -f
 popd || exit
