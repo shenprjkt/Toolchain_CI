@@ -12,6 +12,8 @@ err() {
     echo -e "\e[1;41m$*\e[0m"
 }
 
+GITHUB_TOKEN=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
+
 # Set a directory
 DIR="$(pwd ...)"
 
