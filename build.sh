@@ -37,7 +37,6 @@ msg "$LLVM_NAME: Building LLVM..."
 # Check if the final clang binary exists or not.
 [ ! -f install/bin/clang-1* ] && {
 	err "Building LLVM failed ! Kindly check errors !!"
-	tg_post_build "build.log" "$TG_CHAT_ID" "Error Log"
 	exit 1
 }
 
