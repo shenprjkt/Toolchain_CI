@@ -91,7 +91,7 @@ clang_version="$(install/bin/clang --version | head -n1 | cut -d' ' -f4)"
 # Update Git repository
 git config --global user.name "shenprjkt"
 git config --global user.email "shenprjktplayground@gmail.com"
-git clone "https://shenprjkt:$GITHUB_TOKEN@github.com/Redmi-S2-Y2-Resources/Paradise_Clang.git" rel_repo
+git clone "https://shenprjkt:$GITHUB_TOKEN@github.com/Redmi-S2-Y2-Resources/Paradise_Clang" rel_repo
 pushd rel_repo || exit
 rm -fr ./*
 cp -r ../install/* .
@@ -101,6 +101,6 @@ git commit -asm "Paradise: Update to $rel_date build
 LLVM commit: $llvm_commit_url
 Clang Version: $clang_version
 Binutils version: $binutils_ver
-Builder commit: https://github.com/Redmi-S2-Y2-Resources/tc-build/commit/$builder_commit"
+Builder commit: https://github.com/Redmi-S2-Y2-Resources/Paradise_Clang/commit/$builder_commit"
 git push -f
 popd || exit
