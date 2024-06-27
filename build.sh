@@ -25,6 +25,11 @@ DIR="$(pwd ...)"
 install=$DIR/install
 src=$DIR/src
 
+# Build Info
+rel_date="$(date "+%Y%m%d")" # ISO 8601 format
+rel_friendly_date="$(date "+%B %-d, %Y")" # "Month day, year" format
+builder_commit="$(git rev-parse HEAD)"
+
 # Building LLVM's
 msg "Building LLVM's ..."
 chmod +x build-llvm.py
