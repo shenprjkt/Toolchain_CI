@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-git clone https://github.com/shenprjkt/tc-build $(pwd)/llvmTC -b master
+git https://github.com/Itz-Kanasama/llvmTC $(pwd)/llvmTC -b master
 cd $(pwd)/llvmTC
 
 # Function to show an informational message
@@ -24,21 +24,19 @@ rel_friendly_date="$(date "+%B %-d, %Y")" # "Month day, year" format
 builder_commit="$(git rev-parse HEAD)"
 
 # Build LLVM
-msg "$LLVM_NAME: Building LLVM..."
+msg "${LLVM_NAME}: Building LLVM..."
 ./build-llvm.py \
-	--clang-vendor "$LLVM_NAME" \
-	--defines LLVM_PARALLEL_COMPILE_JOBS=$(nproc) LLVM_PARALLEL_LINK_JOBS=$(nproc) CMAKE_C_FLAGS=-O3 CMAKE_CXX_FLAGS=-O3 \
-	--incremental \
-	--lto thin \
-	--projects "clang;lld;polly;compiler-rt" \
-	--pgo kernel-defconfig \
+	--clang-vendor "${LLVM_NAME}" \
+	--projects "clang;lld;polly" \
+	--targets "ARM;AArch64" \
 	--shallow-clone \
-	--targets "ARM;AArch64" 2>&1 | tee build.log
-
+	--incremental \
+	--build-type "Release" 2>&1 | tee build.log
 
 # Check if the final clang binary exists or not.
 [ ! -f install/bin/clang-1* ] && {
 	err "Building LLVM failed ! Kindly check errors !!"
+	err "build.log" "Error Log"
 	exit 1
 }
 
