@@ -17,3 +17,9 @@ jobs:
         run: |
           wget https://raw.githubusercontent.com/Redmi-S2-Y2-Resources/ClangCI/main/env.sh
           bash env.sh
+
+      steps:
+      - name: Initializing environment
+        run: |
+          git config --global user.name "shenprjkt"
+          git config --global user.email "shenprjktplayground@gmail.com"
