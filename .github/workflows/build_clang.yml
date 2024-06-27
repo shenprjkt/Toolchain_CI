@@ -18,11 +18,6 @@ jobs:
           wget https://raw.githubusercontent.com/Redmi-S2-Y2-Resources/ClangCI/main/env.sh
           bash env.sh
 
-      - name: Setup Git 
-        run: |
-          git config --global user.name "shenprjkt"
-          git config --global user.email "shenprjktplayground@gmail.com"
-
       - name: Build TC
         run: |
           wget https://raw.githubusercontent.com/Redmi-S2-Y2-Resources/ClangCI/main/build.sh
