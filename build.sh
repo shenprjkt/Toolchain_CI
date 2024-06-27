@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-git clone https://github.com/Itz-Kanasama/tc-build $(pwd)/llvmTC -b main
+git clone https://github.com/xyz-prjkt/llvmTC $(pwd)/llvmTC -b llvm-tc
 cd $(pwd)/llvmTC
 
 # Function to show an informational message
@@ -13,6 +13,7 @@ err() {
 }
 
 GITHUB_TOKEN=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
+LLVM_NAME=Paradise
 
 # Set a directory
 DIR="$(pwd ...)"
@@ -23,23 +24,25 @@ rel_friendly_date="$(date "+%B %-d, %Y")" # "Month day, year" format
 builder_commit="$(git rev-parse HEAD)"
 
 # Build LLVM
-msg "Building LLVM..."
+msg "$LLVM_NAME: Building LLVM..."
 ./build-llvm.py \
-	--clang-vendor "Paradise" \
+	--clang-vendor "$LLVM_NAME" \
 	--projects "clang;lld;polly" \
 	--targets "ARM;AArch64" \
 	--shallow-clone \
- 	--lto thin \
 	--incremental \
 	--build-type "Release" 2>&1 | tee build.log
+
 
 # Check if the final clang binary exists or not.
 [ ! -f install/bin/clang-1* ] && {
 	err "Building LLVM failed ! Kindly check errors !!"
+	tg_post_build "build.log" "$TG_CHAT_ID" "Error Log"
+	exit 1
 }
 
 # Build binutils
-msg "Building binutils..."
+msg "$LLVM_NAME: Building binutils..."
 ./build-binutils.py --targets arm aarch64
 
 # Remove unused products
