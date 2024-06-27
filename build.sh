@@ -29,9 +29,8 @@ msg "Building LLVM..."
 	--projects "clang;lld;polly" \
 	--targets "ARM;AArch64" \
 	--shallow-clone \
+ 	--lto thin \
 	--incremental \
-    --pgo \
-	--lto full \
 	--build-type "Release" 2>&1 | tee build.log
 
 # Check if the final clang binary exists or not.
