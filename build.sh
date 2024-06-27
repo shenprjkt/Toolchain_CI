@@ -41,42 +41,6 @@ msg "Building LLVM..."
 msg "Building binutils..."
 ./build-binutils.py --targets arm aarch64
 
-# build gcc
-PREFIX=install/
-msg "Downloading GCC source code"
-git clone https://git.linaro.org/toolchain/gcc.git -b master gcc --depth=1
-
-build_gcc () {
-    msg "Building GCC"
-    cd gcc
-    ./contrib/download_prerequisites
-    cd ../
-    mkdir build-gcc
-    cd build-gcc
-    ../gcc/configure --target=arm64 \
-                     --prefix="$PREFIX" \
-                     --disable-decimal-float \
-                     --disable-libffi \
-                     --disable-libgomp \
-                     --disable-libmudflap \
-                     --disable-libquadmath \
-                     --disable-libstdcxx-pch \
-                     --disable-nls \
-                     --disable-shared \
-                     --disable-docs \
-                     --enable-default-ssp \
-                     --enable-languages=c,c++ \
-                     --with-pkgversion="Paradise GCC" \
-                     --with-newlib \
-                     --with-gnu-as \
-                     --with-gnu-ld \
-                     --with-sysroot
-    make CFLAGS="-flto -O3 -pipe -ffunction-sections -fdata-sections" CXXFLAGS="-flto -O3 -pipe -ffunction-sections -fdata-sections" all-gcc -j$(nproc --all)
-    make CFLAGS="-flto -O3 -pipe -ffunction-sections -fdata-sections" CXXFLAGS="-flto -O3 -pipe -ffunction-sections -fdata-sections" all-target-libgcc -j$(nproc --all)
-    make install-gcc -j$(nproc --all)
-    make install-target-libgcc -j$(nproc --all)
-}
-
 # Remove unused products
 rm -fr install/include
 rm -f install/lib/*.a install/lib/*.la
