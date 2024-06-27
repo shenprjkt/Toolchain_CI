@@ -1,0 +1,14 @@
+name: Build Clang 
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build TC
+        run: |
+          wget https://raw.githubusercontent.com/Redmi-S2-Y2-Resources/ClangCI/main/build2.sh
+          bash build2.sh
