@@ -41,12 +41,12 @@ chmod +x build-llvm.py
     --build-target distribution \
     --check-targets clang lld llvm \
     --install-target distribution \
-    --projects all \
+    --projects clang lld \
     --quiet-cmake \
     --shallow-clone \
     --show-build-commands \
     --targets ARM AArch64 X86 \
-    --ref "release/12.x" \
+    --ref "release/13.x" \
     --vendor-string "$LLVM_NAME" 2>&1 | tee build.log
 
 # Check if the final clang binary exists or not.

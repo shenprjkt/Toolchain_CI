@@ -19,6 +19,9 @@ err() {
 GITHUB_TOKEN=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
 LLVM_NAME=Paradise
 
+export BRANCH=main
+export CACHE=1
+
 # Set a directory
 DIR="$(pwd ...)"
 
