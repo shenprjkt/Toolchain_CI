@@ -86,6 +86,6 @@ git commit -asm "Paradise: Update to $rel_date build
 LLVM commit: $llvm_commit_url
 Clang Version: $clang_version
 Binutils version: $binutils_ver
-Builder commit: https://github.com/shenprjkt/tc-build/commit/$builder_commit"
+Builder commit: https://github.com/Itz-Kanasama/llvmTC/commit/$builder_commit"
 git push -f
 popd || exit
