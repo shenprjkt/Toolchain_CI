@@ -6,3 +6,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Cleanup
+        run: |
+          wget https://raw.githubusercontent.com/Redmi-S2-Y2-Resources/ClangCI/main/clean.sh
+          bash clean.sh
