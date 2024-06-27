@@ -3,6 +3,8 @@
 git clone https://github.com/Redmi-S2-Y2-Resources/tc-build $(pwd)/llvmTC -b main
 cd $(pwd)/llvmTC
 
+bash ci.sh deps
+
 # Function to show an informational message
 msg() {
     echo -e "\e[1;32m$*\e[0m"
