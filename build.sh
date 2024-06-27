@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-git https://github.com/Itz-Kanasama/llvmTC $(pwd)/llvmTC -b master
+git clone https://github.com/Itz-Kanasama/llvmTC $(pwd)/llvmTC -b master
 cd $(pwd)/llvmTC
 
 # Function to show an informational message
