@@ -1,5 +1,4 @@
-name: Build Clang 
-
+name: Build TC
 on:
   workflow_dispatch:
 
