@@ -3,6 +3,8 @@
 git clone https://github.com/Itz-Kanasama/llvmTC $(pwd)/llvmTC -b llvm-tc
 cd $(pwd)/llvmTC
 
+set -eo pipefail
+
 bash ci.sh deps
 
 # Function to show an informational message
@@ -35,6 +37,7 @@ chmod +x build-llvm.py
 	--check-targets clang lld llvm \
 	--projects "clang;lld" \
 	--no-ccache \
+	--no-update \
     --shallow-clone \
     --targets "ARM;AArch64;X86" \
 	--branch "release/13.x" \
