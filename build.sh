@@ -46,7 +46,7 @@ chmod +x build-llvm.py
     --shallow-clone \
     --show-build-commands \
     --targets ARM AArch64 X86 \
-    --ref "release/18.x" \
+    --ref "release/12.x" \
     --vendor-string "$LLVM_NAME" 2>&1 | tee build.log
 
 # Check if the final clang binary exists or not.
@@ -78,9 +78,9 @@ for bin in $(find install -mindepth 2 -maxdepth 3 -type f -exec file {} \; | gre
 done
 
 # Release Info
-pushd llvm-project || exit
+pushd "$src"/llvm-project || exit
 llvm_commit="$(git rev-parse HEAD)"
-short_llvm_commit="$(cut -c-8 <<< "$llvm_commit")"
+short_llvm_commit="$(cut -c-8 <<<"$llvm_commit")"
 popd || exit
 
 llvm_commit_url="https://github.com/llvm/llvm-project/commit/$short_llvm_commit"
