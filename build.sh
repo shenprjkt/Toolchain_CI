@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-git clone https://github.com/xyz-prjkt/llvmTC $(pwd)/llvmTC -b llvm-tc
+git clone https://github.com/Panchajanya1999/tc-build $(pwd)/llvmTC -b master
 cd $(pwd)/llvmTC
 
 # Function to show an informational message
@@ -27,11 +27,13 @@ builder_commit="$(git rev-parse HEAD)"
 msg "$LLVM_NAME: Building LLVM..."
 ./build-llvm.py \
 	--clang-vendor "$LLVM_NAME" \
-	--projects "clang;lld;polly" \
-	--targets "ARM;AArch64" \
-	--shallow-clone \
+	--defines LLVM_PARALLEL_COMPILE_JOBS=$(nproc) LLVM_PARALLEL_LINK_JOBS=$(nproc) CMAKE_C_FLAGS=-O3 CMAKE_CXX_FLAGS=-O3 \
 	--incremental \
-	--build-type "Release" 2>&1 | tee build.log
+	--lto thin \
+	--projects "clang;lld;polly;compiler-rt" \
+	--pgo kernel-defconfig \
+	--shallow-clone \
+	--targets "ARM;AArch64" 2>&1 | tee build.log
 
 
 # Check if the final clang binary exists or not.
@@ -86,6 +88,6 @@ git commit -asm "Paradise: Update to $rel_date build
 LLVM commit: $llvm_commit_url
 Clang Version: $clang_version
 Binutils version: $binutils_ver
-Builder commit: https://github.com/Itz-Kanasama/tc-build/commit/$builder_commit"
+Builder commit: https://github.com/Panchajanya1999/tc-build/commit/$builder_commit"
 git push -f
 popd || exit
