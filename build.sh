@@ -77,8 +77,8 @@ for bin in $(find install -mindepth 2 -maxdepth 3 -type f -exec file {} \; | gre
 done
 
 # Git config
-git config --global user.name "shenprjkt"
-git config --global user.email "shenprjktplayground@gmail.com"
+git config --global user.name "Itz-Kanasama"
+git config --global user.email "renzprjkt@gmail.com"
 
 # Release Info
 pushd "$src"/llvm-project || exit
