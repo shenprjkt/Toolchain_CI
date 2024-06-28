@@ -94,6 +94,8 @@ git clone "https://Redmi-S2-Y2-Resources:$GH_TOKEN@github.com/Redmi-S2-Y2-Resour
 pushd rel_repo || exit
 rm -fr ./*
 cp -r ../install/* .
+git lfs install
+git lfs track "clang-13"
 git checkout README.md # keep this as it's not part of the toolchain itself
 git add .
 git commit -asm "Paradise: Update to $rel_date build
