@@ -13,7 +13,6 @@ err() {
     echo -e "\e[1;41$*\e[0m"
 }
 
-GITHUB_TOKEN=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
 LLVM_NAME=Paradise
 
 # Environment Config
@@ -93,7 +92,7 @@ clang_version="$(install/bin/clang --version | head -n1 | cut -d' ' -f4)"
 
 # Push to GitHub
 # Update Git repository
-git clone "https://Redmi-S2-Y2-Resources:$GITHUB_TOKEN@github.com/Redmi-S2-Y2-Resources/Paradise_Clang" rel_repo
+git clone "https://Redmi-S2-Y2-Resources:$GH_TOKEN@github.com/Redmi-S2-Y2-Resources/Paradise_Clang" rel_repo
 pushd rel_repo || exit
 cp -r "$install"
 git checkout README.md # keep this as it's not part of the toolchain itself
