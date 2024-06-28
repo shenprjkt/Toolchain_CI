@@ -1,4 +1,5 @@
 name: Build TC
+
 on:
   workflow_dispatch:
 
@@ -11,3 +12,7 @@ jobs:
         run: |
           wget https://raw.githubusercontent.com/Redmi-S2-Y2-Resources/ClangCI/main/build2.sh
           bash build2.sh
+
+        env:
+          LLVM_NAME: ${{ secrets.LLVM_NAME }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}

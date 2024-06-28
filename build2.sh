@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 
-git clone https://github.com/Itz-Kanasama/llvmTC $(pwd)/llvmTC -b llvm-tc
+git clone https://github.com/Redmi-S2-Y2-Resources/tc-build $(pwd)/llvmTC -b main
 cd $(pwd)/llvmTC
-
-set -eo pipefail
 
 bash ci.sh deps
 
@@ -11,19 +9,18 @@ bash ci.sh deps
 msg() {
     echo -e "\e[1;32m$*\e[0m"
 }
-
 err() {
-    echo -e "\e[1;41m$*\e[0m"
+    echo -e "\e[1;41$*\e[0m"
 }
 
-GITHUB_TOKEN=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
-LLVM_NAME=Paradise
-
+# Environment Config
 export BRANCH=main
 export CACHE=1
 
-# Set a directory
+# Get home directory
 DIR="$(pwd ...)"
+install=$DIR/install
+src=$DIR/src
 
 # Build Info
 rel_date="$(date "+%Y%m%d")" # ISO 8601 format
@@ -35,16 +32,19 @@ msg "Building LLVM's ..."
 chmod +x build-llvm.py
 ./build-llvm.py \
     --defines LLVM_PARALLEL_COMPILE_JOBS="$(nproc)" LLVM_PARALLEL_LINK_JOBS="$(nproc)" CMAKE_C_FLAGS=-O3 CMAKE_CXX_FLAGS=-O3 \
+    --install-folder "$install" \
     --assertions \
-	--build-stage1-only \
-	--check-targets clang lld llvm \
-	--projects "clang;lld" \
-	--no-ccache \
-	--no-update \
+    --build-stage1-only \
+    --build-target distribution \
+    --check-targets clang lld llvm \
+    --install-target distribution \
+    --projects clang lld \
+    --quiet-cmake \
     --shallow-clone \
-    --targets "ARM;AArch64;X86" \
-	--branch "release/13.x" \
-    --clang-vendor "$LLVM_NAME" 2>&1 | tee build.log
+    --show-build-commands \
+    --targets ARM AArch64 X86 \
+    --ref "release/18.x" \
+    --vendor-string "$LLVM_NAME" 2>&1 | tee build.log
 
 # Check if the final clang binary exists or not.
 [ ! -f install/bin/clang-1* ] && {
@@ -54,31 +54,34 @@ chmod +x build-llvm.py
 }
 
 # Build binutils
-msg "$LLVM_NAME: Building binutils..."
-./build-binutils.py --targets arm aarch64
+msg "Build binutils ..."
+chmod +x build-binutils.py
+./build-binutils.py \
+    --install-folder "$install" \
+    --targets arm aarch64 x86_64
 
-# Remove unused products
 rm -fr install/include
 rm -f install/lib/*.a install/lib/*.la
 
-# Strip remaining products
 for f in $(find install -type f -exec file {} \; | grep 'not stripped' | awk '{print $1}'); do
-	strip -s "${f: : -1}"
+    strip -s "${f::-1}"
 done
 
-# Set executable rpaths so setting LD_LIBRARY_PATH isn't necessary
 for bin in $(find install -mindepth 2 -maxdepth 3 -type f -exec file {} \; | grep 'ELF .* interpreter' | awk '{print $1}'); do
-	# Remove last character from file output (':')
-	bin="${bin: : -1}"
+    bin="${bin::-1}"
 
-	echo "$bin"
-	patchelf --set-rpath "$DIR/install/lib" "$bin"
+    echo "$bin"
+    patchelf --set-rpath "$DIR/../lib" "$bin"
 done
+
+# Git config
+git config --global user.name "Itz-Kanasama"
+git config --global user.email "renzprjkt@gmail.com"
 
 # Release Info
-pushd llvm-project || exit
+pushd "$src"/llvm-project || exit
 llvm_commit="$(git rev-parse HEAD)"
-short_llvm_commit="$(cut -c-8 <<< "$llvm_commit")"
+short_llvm_commit="$(cut -c-8 <<<"$llvm_commit")"
 popd || exit
 
 llvm_commit_url="https://github.com/llvm/llvm-project/commit/$short_llvm_commit"
@@ -87,18 +90,18 @@ clang_version="$(install/bin/clang --version | head -n1 | cut -d' ' -f4)"
 
 # Push to GitHub
 # Update Git repository
-git config --global user.name "shenprjkt"
-git config --global user.email "shenprjktplayground@gmail.com"
-git clone "https://shenprjkt:$GITHUB_TOKEN@github.com/Redmi-S2-Y2-Resources/Paradise_Clang.git" rel_repo
+git clone "https://Redmi-S2-Y2-Resources:$GH_TOKEN@github.com/Redmi-S2-Y2-Resources/Paradise_Clang" rel_repo
 pushd rel_repo || exit
 rm -fr ./*
 cp -r ../install/* .
+git lfs install
+git lfs track "clang-18"
 git checkout README.md # keep this as it's not part of the toolchain itself
 git add .
 git commit -asm "Paradise: Update to $rel_date build
 LLVM commit: $llvm_commit_url
 Clang Version: $clang_version
 Binutils version: $binutils_ver
-Builder commit: https://github.com/Itz-Kanasama/llvmTC/commit/$builder_commit"
-git push -f
+Builder commit: https://github.com/Redmi-S2-Y2-Resources/Paradise_Clang/commit/$builder_commit"
+git push -f origin llvm18
 popd || exit
