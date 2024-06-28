@@ -13,8 +13,6 @@ err() {
     echo -e "\e[1;41$*\e[0m"
 }
 
-LLVM_NAME=Paradise
-
 # Environment Config
 export BRANCH=main
 export CACHE=1
