@@ -13,7 +13,7 @@ err() {
     echo -e "\e[1;41$*\e[0m"
 }
 
-GITHUB_TOKEN=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
+GITHUB_TOKEN=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
 LLVM_NAME=Paradise
 
 # Environment Config
