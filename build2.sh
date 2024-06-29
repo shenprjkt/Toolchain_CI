@@ -103,5 +103,5 @@ LLVM commit: $llvm_commit_url
 Clang Version: $clang_version
 Binutils version: $binutils_ver
 Builder commit: https://github.com/Redmi-S2-Y2-Resources/Paradise_Clang/commit/$builder_commit"
-git push -f origin llvm18
+git push 
 popd || exit
